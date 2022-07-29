@@ -1,0 +1,53 @@
+name: CD
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  upload_artifact:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: fusion-engineering/setup-git-credentials@v2
+        with:
+          credentials: ${{secrets.GIT_CREDENTIALS}}
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - name: Generate Cargo.lock
+        uses: actions-rs/cargo@v1
+        with: { command: generate-lockfile }
+      - name: Cache Dependencies
+        uses: Swatinem/rust-cache@v1.2.0
+      - name: build release
+        run: cargo build --release
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ github.sha }}
+          path: target/release/release-tag-test
+
+  release_tag_version:
+    needs: [upload_artifact]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Download the artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: ${{ github.sha }}
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: release-tag-test
+
+    release_latest:
+      needs: [release_tag_version]
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@v2
+        - name: Create latest tag
+          uses: EndBug/latest-tag@latest

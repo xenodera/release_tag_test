@@ -1,0 +1,16 @@
+[package]
+name = "release_tag_test"
+version = "1.0.0"
+authors = ["xenodera <takumi.onodera@xenodata-lab.com>"]
+edition = "2021"
+include = ["src/"]
+
+[[bin]]
+bench = false
+path = "src/main.rs"
+name = "release-tag-test"
+
+[dependencies]
+
+[dev-dependencies]
+pretty_assertions = "*"

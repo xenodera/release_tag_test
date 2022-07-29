@@ -1,0 +1,9 @@
+**/.bash_history
+/target
+**/.cache/
+**/Cargo.lock
+.secrets
+.vscode/
+.devcontainer/
+/*credentials.json
+.env
