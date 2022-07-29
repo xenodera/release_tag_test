@@ -9,9 +9,6 @@ jobs:
   upload_artifact:
     runs-on: ubuntu-latest
     steps:
-      - uses: fusion-engineering/setup-git-credentials@v2
-        with:
-          credentials: ${{secrets.GIT_CREDENTIALS}}
       - uses: actions/checkout@v2
       - uses: actions-rs/toolchain@v1
         with:
