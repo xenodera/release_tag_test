@@ -35,6 +35,8 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: ${{ github.sha }}
+      - name: Add executable permission
+        run: chmod +x ${{ github.sha }}
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
@@ -52,6 +54,8 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: ${{ github.sha }}
+      - name: Add executable permission
+        run: chmod +x ${{ github.sha }}
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
